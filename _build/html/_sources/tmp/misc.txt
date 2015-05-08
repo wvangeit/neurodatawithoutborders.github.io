@@ -1,0 +1,18 @@
+====================
+Extending the format
+====================
+
+The format is extended by adding new datasets to existing TimeSeries or Modules, or defining new TimeSeries and/or Interfaces. 
+All that's required (recommended) is for the user/lab to provide documentation for those extensions when they share the file. 
+When new TimeSeries or Interfaces extensions become popular, these can be added to the format specification. 
+This approach allows extensibility without breaking compatibility.
+
+==============
+Data integrity
+==============
+
+HDF5 files can become corrupted if a write operation fails, such as through a tool/script crashing or being manually
+closed when writing, or by power failure. This is not unique to HDF5, as other programs (e.g., MATLAB) can produce
+corrupt files when they crash. A corrupted HDF5 file is effectively non-recoverable. 
+There are plans to deal with this but they have not been implemented yet.
+
