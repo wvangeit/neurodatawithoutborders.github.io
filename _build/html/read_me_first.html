@@ -1,0 +1,214 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Neurodata Format &mdash; NWB 0.5 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.5',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="NWB 0.5 documentation" href="index.html" />
+    <link rel="next" title="TimeSeries overview" href="time_series.html" />
+    <link rel="prev" title="Neurodata format documentation" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="time_series.html" title="TimeSeries overview"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Neurodata format documentation"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">NWB 0.5 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="neurodata-format">
+<h1>Neurodata Format<a class="headerlink" href="#neurodata-format" title="Permalink to this headline">¶</a></h1>
+<p>The neurodata format (&#8216;nwb&#8217;) is designed to store a variety of neurophysiology data, including from intra- and extracellular electrophysiology experiments, optophysiology experiments, as well as tracking and stimulus data. It has a defined schema and metadata labeling system designed so software tools can easily access the data.</p>
+<p>NWB uses a schema that is implemented in an HDF5 file. HDF5 itself can be thought of as a file system residing in a file. There are two types of HDF5 objects, groups and datasets. Datasets are equivalent to files in a normal file system, and each stores a particular set of data. Groups are functionally equivalent to directories(folders). A group can store one or more files and/or groups. There are HDF5 libraries in many languages and platforms, and importantly, both python and Matlab support it.</p>
+<p>NWB file contents are organized into several top-level groups, each storing data of a particular type, and top-level
+datasets, storing basic information about the NWB file.</p>
+<div class="section" id="hdf5-overview">
+<h2>HDF5 overview<a class="headerlink" href="#hdf5-overview" title="Permalink to this headline">¶</a></h2>
+<p>For the description that follows, it is important to first discuss some of the characteristics of HDF5. HDF5 can be considered to be a file-system in a file. An HDF5 file is composed of groups and datasets. Groups correspond to filesystem folders or directories, and datesets correspond to files.</p>
+<p>Groups are organized into a hierarchical nature, just like folders (directories) in a file system. HDF5 has the convention of using the slash symbol &#8220;/&#8221; as a path separator. Each HDF5 group can have within it zero or more groups and/or datasets.</p>
+<p>Similar to a filesystem, groups and datasets can be links, or shortcuts, to a group or dataset located elsewhere.</p>
+<p>HDF5 has an ability that goes beyond what is available in many file systems, as all groups and datasets can have arbitrary attributes associated with them. These attributes can be of any type (e.g., a string, an integer, a floating point array, etc.).</p>
+</div>
+<div class="section" id="top-level-groups-folders">
+<h2>Top-level groups (folders)<a class="headerlink" href="#top-level-groups-folders" title="Permalink to this headline">¶</a></h2>
+<p>A neurodata file is broken up into the following categories, each stored as its own HDF5 group (folder):</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="16%" />
+<col width="84%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Folder</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><strong>general</strong></td>
+<td>Experimental metadata, including protocol, notes and description of hardware device(s)</td>
+</tr>
+<tr class="row-odd"><td><strong>acquisition</strong></td>
+<td>Time series of data that are recorded from the system, including ephys, ophys, tracking,
+etc</td>
+</tr>
+<tr class="row-even"><td><strong>stimulus</strong></td>
+<td>Time series of data that is pushed into the system (eg, video stimulus, sound, voltage, etc)</td>
+</tr>
+<tr class="row-odd"><td><strong>epochs</strong></td>
+<td>Experimental intervals, such as sub-experiments having a particular scientific goal, trials
+during an experiment, or epochs deriving from analysis of data</td>
+</tr>
+<tr class="row-even"><td><strong>processing</strong></td>
+<td>The home for processing &#8216;Modules&#8217;. Modules perform intermediate analysis of data that is
+necessary to perform before scientific analysis, including spike clustering, image
+segmentation, tracking data</td>
+</tr>
+<tr class="row-odd"><td><strong>analysis</strong></td>
+<td>Lab-specific and custom scientific analysis of data. There is no defined format for the
+content of this folder – the format is up to the individual user/lab</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="top-level-datasets">
+<h2>Top-level datasets<a class="headerlink" href="#top-level-datasets" title="Permalink to this headline">¶</a></h2>
+<p>Each neurodata file has the following fields that help identify the file and the data within it:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="22%" />
+<col width="78%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Dataset</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><strong>nwb_version</strong></td>
+<td>File version string. This will be the name of the format with trailing major, minor
+and patch numbers (e.g., NWB-0.4.18)</td>
+</tr>
+<tr class="row-odd"><td><strong>identifier</strong></td>
+<td>A unique text identifier for the file</td>
+</tr>
+<tr class="row-even"><td><strong>file_create_data</strong></td>
+<td>Date and time file was created, UTC (ISO 8601)</td>
+</tr>
+<tr class="row-odd"><td><strong>session_start_time</strong></td>
+<td>Date and time experiment was started was created, UTC (ISO 8601). This serves as
+the reference time for data in the file. All timestamps in a neurodata file are
+stored as seconds after this reference time</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="documentation-organization">
+<h2>Documentation organization<a class="headerlink" href="#documentation-organization" title="Permalink to this headline">¶</a></h2>
+<p>There are separate chapters for each of the top-level groups. There are additional chapters
+for <em>Modules</em> and <em>TimeSeries</em>. The structure of NWB is based upon <em>Modules</em> and <em>TimeSeries</em> objects. Understanding these is essential for understanding the neurodata format.</p>
+<p>Documentation is stored as text, with the text itself formatted as ReStructuredText (rst). The documentation should be
+readable directly, and there are also tools capable of converting it to other formats, such as HTML. In order to use
+such tools, the documentation must be pulled from the NWB file and saved as text files. The tools are able to translate these text files to the desired alternate format.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Neurodata Format</a><ul>
+<li><a class="reference internal" href="#hdf5-overview">HDF5 overview</a></li>
+<li><a class="reference internal" href="#top-level-groups-folders">Top-level groups (folders)</a></li>
+<li><a class="reference internal" href="#top-level-datasets">Top-level datasets</a></li>
+<li><a class="reference internal" href="#documentation-organization">Documentation organization</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Neurodata format documentation</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="time_series.html"
+                        title="next chapter">TimeSeries overview</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/read_me_first.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="time_series.html" title="TimeSeries overview"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Neurodata format documentation"
+             >previous</a> |</li>
+        <li><a href="index.html">NWB 0.5 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2015, bar.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>
