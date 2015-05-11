@@ -1,16 +1,30 @@
-.. NWB documentation master file, created by
-   sphinx-quickstart on Mon May 11 10:14:46 2015.
+.. borg documentation master file, created by
+   sphinx-quickstart on Mon Mar 30 12:36:50 2015.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to NWB's documentation!
-===============================
+Neurodata Without Borders format documentation
+==============================================
+
 
 Contents:
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
 
+   read_me_first
+   time_series
+   time_series_types
+
+   acquisition
+   stimulus
+   epochs
+
+   processing
+   analysis
+   general
+
+   misc
 
 
 Indices and tables
